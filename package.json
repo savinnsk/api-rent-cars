@@ -1,0 +1,13 @@
+{
+  "name": "api-rent-cars",
+  "version": "1.0.0",
+  "description": "api to rent cars",
+  "main": "index.js",
+  "author": "savinnsk",
+  "license": "ISC",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
