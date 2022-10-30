@@ -6,7 +6,7 @@
   "author": "savinnsk",
   "license": "ISC",
   "scripts": {
-    "test": "jest git --runInBand --no-cache --passWithNoTests",
+    "test": "jest --runInBand --no-cache --passWithNoTests",
     "test:staged": "npm test --"
   },
   "devDependencies": {
