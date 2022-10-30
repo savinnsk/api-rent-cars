@@ -6,5 +6,4 @@ export interface UserModel {
   password: string
   email: string
   driver_license: string
-  created_at: string
 }

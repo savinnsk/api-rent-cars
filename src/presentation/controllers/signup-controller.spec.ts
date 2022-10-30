@@ -1,4 +1,4 @@
-import { AddAccountUserDTO } from "../../domain/usecases/add-account"
+import { AddAccountUserDTO } from "../../domain/usecases/add-account-protocols"
 import { InvalidParamsError } from "../errors/invalid-params-error"
 import { MissingParamsError } from "../errors/missing-params-error"
 import { ServerError } from "../errors/server-error"

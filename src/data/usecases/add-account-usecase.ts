@@ -1,7 +1,7 @@
 import { UserModel } from "../../domain/models/user"
-import { AddAccount, AddAccountUserDTO } from "../../domain/usecases/add-account"
+import { AddAccount, AddAccountUserDTO } from "../../domain/usecases/add-account-protocols"
 import { AddAccountRepository } from "../protocols/add-account-repository-protocols"
-import { Encrypt } from "../protocols/encrypter-protocols"
+import { Encrypt } from "../protocols/encrypt-protocols"
 
 export class AddAccountUseCase implements AddAccount {
   private readonly addAccountRepository: AddAccountRepository

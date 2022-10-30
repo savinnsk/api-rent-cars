@@ -7,7 +7,9 @@
   "license": "ISC",
   "scripts": {
     "test": "jest --runInBand --no-cache --passWithNoTests",
-    "test:staged": "npm run test --"
+    "test:staged": "npm run test --",
+    "test:verbose": "jest --coverage"
+    
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",
