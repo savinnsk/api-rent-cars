@@ -7,8 +7,8 @@
   "license": "ISC",
   "scripts": {
     "prepare": "husky install",
-    "test": "jest --passWithNoTests",
-    "test:staged": "npm test --"
+    "test": "jest --runInBand --no-cache --passWithNoTests",
+    "test:staged": "npm run test --"
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",
