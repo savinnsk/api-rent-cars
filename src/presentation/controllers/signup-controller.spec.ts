@@ -1,7 +1,8 @@
+import { AddAccountUserDTO } from "../../domain/usecases/add-account"
 import { InvalidParamsError } from "../errors/invalid-params-error"
 import { MissingParamsError } from "../errors/missing-params-error"
 import { ServerError } from "../errors/server-error"
-import { badRequest, serverError } from "../helpers/http.helper"
+import { badRequest, ok, serverError } from "../helpers/http.helper"
 import { EmailValidator } from "../protocols/email-validator-protocols"
 import { HttpRequest } from "../protocols/http-protocols"
 // import { HttpRequest } from "../protocols/http-protocols"
@@ -29,6 +30,14 @@ const makeFakeRequest = (): HttpRequest => ({
     email: "valid_mail@mail.com",
     driver_license: "valid_driver_license"
   }
+})
+
+const makeFakeAccount = (): AddAccountUserDTO => ({
+  name: "valid_name",
+  username: "valid_username",
+  password: "valid_password",
+  email: "valid_mail@mail.com",
+  driver_license: "valid_driver_license"
 })
 
 const makeSut = (): sutTypes => {
@@ -147,5 +156,12 @@ describe("signupController", () => {
     const httpResponse = await sut.handle(makeFakeRequest())
 
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test("should return 200 if valid data provider", async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+
+    expect(httpResponse).toEqual(ok(makeFakeAccount()))
   })
 })
