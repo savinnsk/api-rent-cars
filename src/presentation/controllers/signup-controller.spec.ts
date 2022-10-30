@@ -14,7 +14,7 @@ describe("signupController", () => {
       body: {
         username: "valid_username",
         password: "valid_password",
-        email: "valid_email",
+        email: "valid_mail@mail.com",
         driver_license: "valid_driver_license"
       }
     }
@@ -31,7 +31,7 @@ describe("signupController", () => {
       body: {
         name: "valid_name",
         password: "valid_password",
-        email: "valid_email",
+        email: "valid_mail@mail.com",
         driver_license: "valid_driver_license"
       }
     }
@@ -48,7 +48,7 @@ describe("signupController", () => {
       body: {
         name: "valid_name",
         username: "valid_username",
-        email: "valid_email",
+        email: "valid_mail@mail.com",
         driver_license: "valid_driver_license"
       }
     }
@@ -56,5 +56,22 @@ describe("signupController", () => {
     const httpResponse = await sut.handle(HttpRequest)
 
     expect(httpResponse).toEqual(badRequest(new MissingParamsError("password")))
+  })
+
+  test("should return 400 if no driver license provider", async () => {
+    const sut = makeSut()
+
+    const HttpRequest = {
+      body: {
+        name: "valid_name",
+        username: "valid_username",
+        password: "valid_password",
+        email: "valid_mail@mail.com"
+      }
+    }
+
+    const httpResponse = await sut.handle(HttpRequest)
+
+    expect(httpResponse).toEqual(badRequest(new MissingParamsError("driver_license")))
   })
 })
