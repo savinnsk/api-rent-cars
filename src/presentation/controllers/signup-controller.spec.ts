@@ -1,14 +1,36 @@
 import { MissingParamsError } from "../errors/missing-params-error"
 import { badRequest } from "../helpers/http.helper"
+import { EmailValidator } from "../protocols/email-validator-protocols"
 import { SignupController } from "./signup-controller"
 
-const makeSut = (): SignupController => {
-  return new SignupController()
+interface sutTypes {
+  sut: SignupController
+  emailValidatorStub: EmailValidator
+}
+
+const makeEmailValidatorStub = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid (email: string): boolean {
+      return false
+    }
+  }
+
+  return new EmailValidatorStub()
+}
+
+const makeSut = (): sutTypes => {
+  const emailValidatorStub = makeEmailValidatorStub()
+  const sut = new SignupController(emailValidatorStub)
+
+  return {
+    emailValidatorStub,
+    sut
+  }
 }
 
 describe("signupController", () => {
   test("should return 400 if no name provider", async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const HttpRequest = {
       body: {
@@ -25,7 +47,7 @@ describe("signupController", () => {
   })
 
   test("should return 400 if no username provider", async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const HttpRequest = {
       body: {
@@ -42,7 +64,7 @@ describe("signupController", () => {
   })
 
   test("should return 400 if no password provider", async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const HttpRequest = {
       body: {
@@ -59,7 +81,7 @@ describe("signupController", () => {
   })
 
   test("should return 400 if no driver license provider", async () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const HttpRequest = {
       body: {
