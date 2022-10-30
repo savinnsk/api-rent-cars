@@ -6,7 +6,6 @@
   "author": "savinnsk",
   "license": "ISC",
   "scripts": {
-    "prepare": "husky install",
     "test": "jest git --runInBand --no-cache --passWithNoTests",
     "test:staged": "npm test --"
   },
