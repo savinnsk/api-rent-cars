@@ -1,3 +1,4 @@
+import { AddAccount } from "../../domain/usecases/add-account-protocols"
 import { InvalidParamsError } from "../errors/invalid-params-error"
 import { MissingParamsError } from "../errors/missing-params-error"
 import { badRequest, ok, serverError } from "../helpers/http.helper"
@@ -7,8 +8,11 @@ import { HttpRequest, HttpResponse } from "../protocols/http-protocols"
 
 export class SignupController implements Controller {
   private readonly emailValidator: EmailValidator
-  constructor (emailValidator: EmailValidator) {
+  private readonly addAccount: AddAccount
+
+  constructor (emailValidator: EmailValidator, addAccount: AddAccount) {
     this.emailValidator = emailValidator
+    this.addAccount = addAccount
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,7 +26,7 @@ export class SignupController implements Controller {
       }
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const { name, username, email, password, driver_license } = await httpRequest.body
-      const account = { name, username, email, password, driver_license }
+      const account = await this.addAccount.add({ name, username, email, password, driver_license })
 
       const isValid = this.emailValidator.isValid(email)
       if (!isValid) {
