@@ -70,4 +70,22 @@ describe(("AddAccount UseCase"), () => {
 
     expect(encryptSpy).toHaveBeenLastCalledWith("valid_password")
   })
+
+  test("should throws if Encrypt throws", async () => {
+    const { encryptStub, sut } = makeSut()
+
+    jest.spyOn(encryptStub, "encrypt").mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+    const result = sut.add(makeFakeAccountDTO())
+
+    expect(result).rejects.toThrow()
+  })
+
+  test("should return an account on success", async () => {
+    const { sut } = makeSut()
+
+    const account = await sut.add(makeFakeAccountDTO())
+
+    expect(account).toEqual(makeFakeAccount())
+  })
 })
