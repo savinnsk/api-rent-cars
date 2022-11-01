@@ -1,4 +1,5 @@
-import { AddAccountUserDTO } from "../../domain/usecases/add-account-protocols"
+import { UserModel } from "../../domain/models/user"
+import { AddAccount, AddAccountUserDTO } from "../../domain/usecases/add-account-protocols"
 import { InvalidParamsError } from "../errors/invalid-params-error"
 import { MissingParamsError } from "../errors/missing-params-error"
 import { ServerError } from "../errors/server-error"
@@ -11,6 +12,7 @@ import { SignupController } from "./signup-controller"
 interface sutTypes {
   sut: SignupController
   emailValidatorStub: EmailValidator
+  addAccountStub: AddAccount
 }
 
 const makeEmailValidatorStub = (): EmailValidator => {
@@ -32,7 +34,8 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
-const makeFakeAccount = (): AddAccountUserDTO => ({
+const makeFakeAccount = (): UserModel => ({
+  id: "valid_id",
   name: "valid_name",
   username: "valid_username",
   password: "valid_password",
@@ -40,13 +43,24 @@ const makeFakeAccount = (): AddAccountUserDTO => ({
   driver_license: "valid_driver_license"
 })
 
+const makeFakeAddAccountStub = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    async add (account: AddAccountUserDTO): Promise<AddAccountUserDTO> {
+      return await new Promise(resolve => resolve(makeFakeAccount()))
+    }
+  }
+  return new AddAccountStub()
+}
+
 const makeSut = (): sutTypes => {
   const emailValidatorStub = makeEmailValidatorStub()
-  const sut = new SignupController(emailValidatorStub)
+  const addAccountStub = makeFakeAddAccountStub()
+  const sut = new SignupController(emailValidatorStub, addAccountStub)
 
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    addAccountStub
   }
 }
 
@@ -163,5 +177,17 @@ describe("signupController", () => {
     const httpResponse = await sut.handle(makeFakeRequest())
 
     expect(httpResponse).toEqual(ok(makeFakeAccount()))
+  })
+
+  test("should return 500 if add Account throws", async () => {
+    const { sut, addAccountStub } = makeSut()
+
+    jest.spyOn(addAccountStub, "add").mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => reject(new Error()))
+    })
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
