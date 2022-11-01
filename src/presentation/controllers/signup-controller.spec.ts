@@ -1,16 +1,17 @@
-import { AddAccountUserDTO } from "../../domain/usecases/add-account-protocols"
+import { UserModel } from "../../domain/models/user"
+import { AddAccount, AddAccountUserDTO } from "../../domain/usecases/add-account-protocols"
 import { InvalidParamsError } from "../errors/invalid-params-error"
 import { MissingParamsError } from "../errors/missing-params-error"
 import { ServerError } from "../errors/server-error"
 import { badRequest, ok, serverError } from "../helpers/http.helper"
 import { EmailValidator } from "../protocols/email-validator-protocols"
 import { HttpRequest } from "../protocols/http-protocols"
-// import { HttpRequest } from "../protocols/http-protocols"
 import { SignupController } from "./signup-controller"
 
 interface sutTypes {
   sut: SignupController
   emailValidatorStub: EmailValidator
+  addAccountStub: AddAccount
 }
 
 const makeEmailValidatorStub = (): EmailValidator => {
@@ -32,7 +33,8 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
-const makeFakeAccount = (): AddAccountUserDTO => ({
+const makeFakeAccount = (): UserModel => ({
+  id: "valid_id",
   name: "valid_name",
   username: "valid_username",
   password: "valid_password",
@@ -40,13 +42,25 @@ const makeFakeAccount = (): AddAccountUserDTO => ({
   driver_license: "valid_driver_license"
 })
 
+const makeFakeAddAccountStub = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    async add (account: AddAccountUserDTO): Promise<AddAccountUserDTO> {
+      return await new Promise(resolve => (resolve(makeFakeAccount())))
+    }
+  }
+
+  return new AddAccountStub()
+}
+
 const makeSut = (): sutTypes => {
   const emailValidatorStub = makeEmailValidatorStub()
-  const sut = new SignupController(emailValidatorStub)
+  const addAccountStub = makeFakeAddAccountStub()
+  const sut = new SignupController(emailValidatorStub, addAccountStub)
 
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    addAccountStub
   }
 }
 
