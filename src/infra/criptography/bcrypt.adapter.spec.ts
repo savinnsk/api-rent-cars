@@ -15,4 +15,12 @@ describe("Encrypt password", () => {
 
     expect(encryptSpy).toHaveBeenCalledWith("any_value")
   })
+
+  test("should return a hash on success", async () => {
+    const sut = makeSut()
+
+    const hash = await sut.encrypt("any_value")
+
+    expect(hash).toBe(hash)
+  })
 })
