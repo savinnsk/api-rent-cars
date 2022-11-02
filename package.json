@@ -11,6 +11,7 @@
     "test:verbose": "jest --coverage"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^4.1.3",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.2.0",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
