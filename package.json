@@ -9,9 +9,9 @@
     "test": "jest --runInBand --no-cache --passWithNoTests",
     "test:staged": "npm run test --",
     "test:verbose": "jest --coverage"
-    
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.2.0",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "eslint": "^8.26.0",
@@ -25,5 +25,8 @@
     "lint-staged": "^13.0.3",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0"
   }
 }
