@@ -6,7 +6,7 @@
   "author": "savinnsk",
   "license": "ISC",
   "scripts": {
-    "test": "jest --runInBand --no-cache --passWithNoTests",
+    "test": "jest --runInBand --no-cache --passWithNoTests --forceExit",
     "test:staged": "npm run test --",
     "test:verbose": "jest --coverage"
   },
