@@ -7,6 +7,7 @@
   "license": "ISC",
   "scripts": {
     "test": "jest --runInBand --no-cache --passWithNoTests --forceExit",
+    "start": "sucrase-node src/main/server.ts",
     "test:staged": "npm run test --",
     "test:verbose": "jest --coverage"
   },
@@ -37,6 +38,8 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongodb": "^4.11.0",
+    "start": "^5.1.0",
+    "sucrase": "^3.28.0",
     "validator": "^13.7.0"
   }
 }
